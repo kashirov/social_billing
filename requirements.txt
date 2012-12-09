@@ -1,0 +1,3 @@
+git+https://github.com/dsociative/ztest.git
+nose
+tornado
