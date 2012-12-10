@@ -1,15 +1,12 @@
 # -*- coding: utf-8 -*-
 from social_billing.handler.base_handler import BaseHandler
 
+ORDER = 'order_status_change'
+GET_ITEM = 'get_item'
+CHARGEABLE = 'chargeable'
+
 
 class IndexHandler(BaseHandler):
-
-    store = {'gems': {10: 1, 20: 2}}
-
-    def get_item(self):
-        item = self.get_argument('item')
-        name, count = item.split('_')
-        return name, int(count)
 
     def title(self, name, count):
         return '%s %s' % (count, self.locale.translate(name))
@@ -18,6 +15,14 @@ class IndexHandler(BaseHandler):
         return self.store[name][count]
 
     def post(self):
-        name, count = self.get_item()
-        return self.response({'title': self.title(name, count),
-                              'price': self.price(name, count)})
+        notification_type = self.get_argument('notification_type')
+        name, count = self.payment.item(self.get_argument('item'))
+
+        if notification_type == GET_ITEM:
+            return self.response({'title': self.title(name, count),
+                                  'price': self.payment.price(name, count)})
+        elif notification_type == ORDER:
+            order_id = self.get_argument('order_id')
+            receiver_id = self.get_argument('receiver_id')
+            return self.response(self.payment.order(order_id, receiver_id,
+                                                    name, count))
