@@ -34,4 +34,5 @@ class IndexTest(BaseTest):
 
     def test_post_order(self):
         self.eq(self.handler.post(self.order_status_change()),
-                {'response': self.payment.order('100500', 'uid', 'gems', 10)})
+                {'response': self.payment.order('100500', 'uid', 'gems', 10,
+                                                True)})

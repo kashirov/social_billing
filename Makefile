@@ -11,3 +11,6 @@ env:
 clean:
 	rm -rf $(ENV)
 
+test:
+	nosetests
+

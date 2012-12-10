@@ -14,16 +14,26 @@ class IndexHandler(BaseHandler):
     def price(self, name, count):
         return self.store[name][count]
 
-    def get(self):
+    def isget_item(self, ntype):
+        return ntype.startswith(GET_ITEM)
+
+    def isorder(self, ntype):
+        return ntype.startswith(ORDER)
+
+    def post(self):
         notification_type = self.get_argument('notification_type')
         name, count = self.payment.item(self.get_argument('item'))
 
-        if notification_type == GET_ITEM:
+        if self.isget_item(notification_type):
             return self.response({'title': self.title(name, count),
                                   'price': self.payment.price(name, count)})
-        elif notification_type == ORDER:
+        elif self.isorder(notification_type):
             order_id = self.get_argument('order_id')
             receiver_id = self.get_argument('receiver_id')
-            return self.response(self.payment.order(order_id, receiver_id,
-                                                    name, count))
+            status = self.get_argument('status')
 
+            order = self.payment.order(order_id, receiver_id, name,
+                                       count, status == CHARGEABLE)
+            return self.response(order)
+
+    get = post

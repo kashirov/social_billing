@@ -25,7 +25,7 @@ class Payment(object):
     def has_order(self, order_id):
         return self.collection.find_one({'order_id': order_id}) is not None
 
-    def order(self, order_id, receiver_id, item, count):
-        if not self.has_order(order_id):
+    def order(self, order_id, receiver_id, item, count, chargeable):
+        if not self.has_order(order_id) and chargeable:
             self.process(order_id, receiver_id, item, count)
         return {'order_id': order_id}

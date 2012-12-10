@@ -7,4 +7,5 @@ setup(name='social_billing',
       author='dsociative',
       author_email='admin@geektech.ru',
       packages=['social_billing', 'social_billing.handler'],
+      package_data={'social_billing': ['translations/*.csv']},
 )

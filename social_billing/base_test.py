@@ -1,7 +1,4 @@
 # -*- coding: utf-8 -*-
-import os
-
-import tornado
 from tornado.httpserver import HTTPRequest
 from tornado.web import Application
 from ztest import ZTest
@@ -34,9 +31,6 @@ class BaseTest(ZTest):
 
     def __init__(self, *args, **kwargs):
         super(BaseTest, self).__init__(*args, **kwargs)
-        tornado.locale.load_translations(
-            os.path.join(os.path.dirname(__file__), "translations")
-        )
 
     def proxy(self, data):
         return data
