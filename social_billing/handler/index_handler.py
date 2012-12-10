@@ -14,7 +14,7 @@ class IndexHandler(BaseHandler):
     def price(self, name, count):
         return self.store[name][count]
 
-    def post(self):
+    def get(self):
         notification_type = self.get_argument('notification_type')
         name, count = self.payment.item(self.get_argument('item'))
 
@@ -26,3 +26,4 @@ class IndexHandler(BaseHandler):
             receiver_id = self.get_argument('receiver_id')
             return self.response(self.payment.order(order_id, receiver_id,
                                                     name, count))
+

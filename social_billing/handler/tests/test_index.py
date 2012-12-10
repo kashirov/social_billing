@@ -14,6 +14,7 @@ class IndexTest(BaseTest):
         self.handler = self.fake(IndexHandler)
         self.handler.init({'gems': {10: 1, 20: 2}}, self.callback)
         self.handler.set_args(self.get_item('gems_20'))
+        self.payment = self.handler.payment
 
     def get_item(self, item='gems_20', ntype=GET_ITEM):
         return {'notification_type': ntype, 'item': item}
@@ -33,4 +34,4 @@ class IndexTest(BaseTest):
 
     def test_post_order(self):
         self.eq(self.handler.post(self.order_status_change()),
-                {'response': {'order_id': '100500'}})
+                {'response': self.payment.order('100500', 'uid', 'gems', 10)})

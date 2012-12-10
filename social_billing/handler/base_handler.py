@@ -7,6 +7,7 @@ from social_billing.payment import Payment
 
 class BaseHandler(RequestHandler):
 
+    @classmethod
     def init(self, prices, callback):
         BaseHandler.payment = Payment(prices, callback)
 
