@@ -21,3 +21,7 @@ class BaseHandler(RequestHandler):
 
     def response(self, resp):
         return self.finish({'response': resp})
+
+    def error(self, code, msg, critical=1):
+        return self.finish({'error': {'error_code': code, 'error_msg': msg,
+                            'critical': critical}})

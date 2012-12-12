@@ -1,18 +1,17 @@
 # -*- coding: utf-8 -*-
 from social_billing.base_test import BaseTest
+from social_billing.errors import InvalidCountError, UnknownItemError,\
+    ItemFormatError
 from social_billing.handler.index_handler import IndexHandler, GET_ITEM, \
-    ORDER, CHARGEABLE
+    ORDER
+from social_billing.payment import CHARGEABLE
 
 
 class IndexTest(BaseTest):
 
-    def callback(self, *args):
-        pass
-
     def setUp(self):
         super(IndexTest, self).setUp()
         self.handler = self.fake(IndexHandler)
-        self.handler.init({'gems': {10: 1, 20: 2}}, self.callback)
         self.handler.set_args(self.get_item('gems_20'))
         self.payment = self.handler.payment
 
@@ -36,3 +35,13 @@ class IndexTest(BaseTest):
         self.eq(self.handler.post(self.order_status_change()),
                 {'response': self.payment.order('100500', 'uid', 'gems', 10,
                                                 True)})
+
+    def test_errors(self):
+        for error, item in [(ItemFormatError(), 'gems_no'),
+                            (UnknownItemError(), 'coins_10'),
+                            (InvalidCountError(), 'gems_11')]:
+
+            self.eq(self.handler.post(self.get_item(item=item)),
+                    {'error': {'error_code': error.code,
+                               'error_msg': error.msg,
+                               'critical': 1}})

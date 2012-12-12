@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 from ztest import ZTest
 
-from social_billing.payment import Payment
+from social_billing.errors import ItemFormatError, UnknownItemError,\
+    InvalidCountError
+from social_billing.payment import Payment, CHARGEABLE
 
 
 class Engine(object):
@@ -35,14 +37,14 @@ class PaymentTest(ZTest):
                 {'order_id': 1})
 
     def test_order_db(self):
-        self.payment.order(1, 'uid', 'gems', 10, True)
+        self.payment.order(1, 'uid', 'gems', 10, CHARGEABLE)
         self.eq(list(self.payment.collection.find({'order_id': 1},
                                                   {'_id': False})),
                 [{'order_id': 1}])
 
     def test_order_callback(self):
         for _ in xrange(3):
-            self.payment.order(1, 'uid', 'gems', 10, True)
+            self.payment.order(1, 'uid', 'gems', 10, CHARGEABLE)
 
         self.eq(self.engine.log, [('uid', 'gems', 10)])
 
@@ -50,3 +52,13 @@ class PaymentTest(ZTest):
         self.payment.order(1, 'uid', 'gems', 10, False)
 
         self.eq(self.engine.log, [])
+
+    def test_item_format_error(self):
+        self.raises(ItemFormatError, self.payment.item, 'item_no')
+        self.raises(ItemFormatError, self.payment.item, 'item10')
+
+    def test_unknown_item(self):
+        self.raises(UnknownItemError, self.payment.price, 'item', 10)
+
+    def test_invalid_count(self):
+        self.raises(InvalidCountError, self.payment.price, 'gems', 11)

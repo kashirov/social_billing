@@ -28,15 +28,6 @@ if __name__ == '__main__':
     def callback(self, *a):
         print a
 
-    import signal
-    import sys
-
     service = BillingThread({'gems': {10: 1, 20: 2}}, callback)
-
-    def signal_handler(signal, frame):
-        service.stop()
-
-    signal.signal(signal.SIGINT, signal_handler)
-
     service.run()
     print 'started'

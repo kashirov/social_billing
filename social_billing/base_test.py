@@ -3,6 +3,8 @@ from tornado.httpserver import HTTPRequest
 from tornado.web import Application
 from ztest import ZTest
 
+from social_billing.handler.base_handler import BaseHandler
+
 
 class MethodHook(object):
 
@@ -29,8 +31,12 @@ class BaseTest(ZTest):
 
     app = Application(debug=True)
 
+    def callback(self, *args):
+        pass
+
     def __init__(self, *args, **kwargs):
         super(BaseTest, self).__init__(*args, **kwargs)
+        BaseHandler.init({'gems': {10: 1, 20: 2}}, self.callback)
 
     def proxy(self, data):
         return data
