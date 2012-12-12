@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
-from ztest import ZTest
-
+from social_billing.base_test import BaseTest
 from social_billing.errors import ItemFormatError, UnknownItemError,\
     InvalidCountError
 from social_billing.payment import Payment, CHARGEABLE
@@ -15,7 +14,7 @@ class Engine(object):
         self.log.append((receiver_id, name, count))
 
 
-class PaymentTest(ZTest):
+class PaymentTest(BaseTest):
 
     def setUp(self):
         super(PaymentTest, self).setUp()
@@ -31,6 +30,15 @@ class PaymentTest(ZTest):
     def test_price(self):
         self.eq(self.payment.price('gems', 10), 1)
         self.eq(self.payment.price('gems', 20), 2)
+
+    def test_title(self):
+        self.eq(self.payment.title('gems', 20), u'20 алмазов')
+        self.eq(self.payment.title('gems', 10), u'10 алмазов')
+
+    def test_info(self):
+        self.eq(self.payment.info('gems', 10),
+                {'title': self.payment.title('gems', 10),
+                 'price': 1})
 
     def test_order(self):
         self.eq(self.payment.order(1, 'uid', 'gems', 10, True),

@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 import re
 
+import tornado.locale
 from pymongo import Connection
 
 from social_billing.errors import ItemFormatError, UnknownItemError,\
     InvalidCountError
+
 
 CHARGEABLE = 'chargeable'
 
@@ -19,6 +21,8 @@ class Payment(object):
 
         self.db = Connection()['payment_%s' % db_prefix]
         self.collection = self.db['order']
+
+        self.locale = tornado.locale.get('ru_RU')
 
     def item(self, arg):
         match = self.item_regexp.match(arg)
@@ -37,6 +41,13 @@ class Payment(object):
             raise InvalidCountError()
         else:
             return item[count]
+
+    def title(self, name, count):
+        return ' '.join((str(count), self.locale.translate(name)))
+
+    def info(self, name, count):
+        return {'title': self.title(name, count),
+                'price': self.price(name, count)}
 
     def has_order(self, order_id):
         return self.collection.find_one({'order_id': order_id}) is not None

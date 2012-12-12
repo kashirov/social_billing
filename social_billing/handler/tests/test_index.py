@@ -23,10 +23,6 @@ class IndexTest(BaseTest):
                 'item': 'gems_20', 'price': '10', 'order_id': '100500',
                 'receiver_id': 'uidhere'}
 
-    def test_title(self):
-        self.eq(self.handler.title('gems', 20), u'20 алмазов')
-        self.eq(self.handler.title('gems', 10), u'10 алмазов')
-
     def test_post_get_info(self):
         self.eq(self.handler.post(self.get_item()),
                 {'response': {'title': u'20 алмазов', 'price': 2}})
