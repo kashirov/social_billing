@@ -7,10 +7,10 @@ from social_billing.app import application
 from social_billing.handler.base_handler import BaseHandler
 
 
-class ServiceThread(Thread):
+class BillingThread(Thread):
 
     def __init__(self, prices, callback, port=8888):
-        super(ServiceThread, self).__init__()
+        super(BillingThread, self).__init__()
         BaseHandler.init(prices, callback)
         self.app = application
         self.port = port
@@ -31,7 +31,7 @@ if __name__ == '__main__':
     import signal
     import sys
 
-    service = ServiceThread({'gems': {10: 1, 20: 2}}, callback)
+    service = BillingThread({'gems': {10: 1, 20: 2}}, callback)
 
     def signal_handler(signal, frame):
         service.stop()
