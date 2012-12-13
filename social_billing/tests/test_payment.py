@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from social_billing.base_test import BaseTest
 from social_billing.errors import ItemFormatError, UnknownItemError,\
-    InvalidCountError
+    InvalidCountError, CallbackError
 from social_billing.payment import Payment, CHARGEABLE
 
 
@@ -12,6 +12,7 @@ class Engine(object):
 
     def callback(self, receiver_id, name, count):
         self.log.append((receiver_id, name, count))
+        return True
 
 
 class PaymentTest(BaseTest):
@@ -71,13 +72,23 @@ class PaymentTest(BaseTest):
 
         self.eq(self.engine.log, [])
 
-    def test_payment_error(self):
-        for error, item in [(ItemFormatError(), 'gems_no'),]:
-
+    def test_order_error(self):
+        for error, item in [(ItemFormatError(), 'gems_no')]:
             self.eq(self.payment.order(1, 'uid', item, CHARGEABLE),
                     {'error': {'error_code': error.code,
                                'error_msg': error.msg,
                                'critical': 1}})
+
+    def error_callback(self, *a):
+        return False
+
+    def test_order_callback_error(self):
+        error = CallbackError()
+        self.payment.callback = self.error_callback
+        self.eq(self.payment.order(1, 'uid', 'gems_10', CHARGEABLE),
+                {'error': {'error_code': error.code,
+                           'error_msg': error.msg,
+                           'critical': 1}})
 
     def test_item_format_error(self):
         self.raises(ItemFormatError, self.payment.item, 'item_no')

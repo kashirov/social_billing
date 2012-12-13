@@ -32,3 +32,9 @@ class InvalidCountError(BaseException):
 
     code = 12
     name = 'invalid count'
+
+
+class CallbackError(BaseException):
+
+    code = 13
+    name = 'callback error'

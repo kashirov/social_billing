@@ -1,4 +1,5 @@
 "gems","алмазов"
-"item format error","Неверный формат item",
-"unknown item","Неизвестный item"
+"item format error","Неверный формат предмета",
+"unknown item","Неизвестный предмет"
 "invalid count","Неверное количество"
+"callback error","Ошибка покупки в игре"

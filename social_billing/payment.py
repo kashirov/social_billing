@@ -5,7 +5,7 @@ import tornado.locale
 from pymongo import Connection
 
 from social_billing.errors import ItemFormatError, UnknownItemError,\
-    InvalidCountError
+    InvalidCountError, CallbackError
 
 
 CHARGEABLE = 'chargeable'
@@ -66,11 +66,13 @@ class Payment(object):
         if not self.has_order(order_id) and self.ischargeable(status):
             try:
                 self.process(order_id, receiver_id, item_count)
-            except ItemFormatError as error:
+            except (ItemFormatError, CallbackError) as error:
                 return error.response()
         return self.response({'order_id': order_id})
 
     def process(self, order_id, receiver_id, item_count):
         name, count = self.item(item_count)
-        self.callback(receiver_id, name, count)
-        self.collection.insert({'order_id': order_id})
+        if self.callback(receiver_id, name, count):
+            self.collection.insert({'order_id': order_id})
+        else:
+            raise CallbackError()
