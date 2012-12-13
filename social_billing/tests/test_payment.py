@@ -36,30 +36,48 @@ class PaymentTest(BaseTest):
         self.eq(self.payment.title('gems', 10), u'10 алмазов')
 
     def test_info(self):
-        self.eq(self.payment.info('gems', 10),
-                {'title': self.payment.title('gems', 10),
-                 'price': 1})
+        self.eq(self.payment.info('gems_10'),
+                self.payment.response({'title': self.payment.title('gems', 10),
+                'price': 1}))
+
+    def test_info_error(self):
+        for error, item in [(ItemFormatError(), 'gems_no'),
+                            (UnknownItemError(), 'coins_10'),
+                            (InvalidCountError(), 'gems_11')]:
+
+            self.eq(self.payment.info(item),
+                    {'error': {'error_code': error.code,
+                               'error_msg': error.msg,
+                               'critical': 1}})
 
     def test_order(self):
-        self.eq(self.payment.order(1, 'uid', 'gems', 10, True),
-                {'order_id': 1})
+        self.eq(self.payment.order(1, 'uid', 'gems_10', CHARGEABLE),
+                self.payment.response({'order_id': 1}))
 
     def test_order_db(self):
-        self.payment.order(1, 'uid', 'gems', 10, CHARGEABLE)
+        self.payment.order(1, 'uid', 'gems_10', CHARGEABLE)
         self.eq(list(self.payment.collection.find({'order_id': 1},
                                                   {'_id': False})),
                 [{'order_id': 1}])
 
     def test_order_callback(self):
         for _ in xrange(3):
-            self.payment.order(1, 'uid', 'gems', 10, CHARGEABLE)
+            self.payment.order(1, 'uid', 'gems_10', CHARGEABLE)
 
         self.eq(self.engine.log, [('uid', 'gems', 10)])
 
     def test_order_callback_not_chargeable(self):
-        self.payment.order(1, 'uid', 'gems', 10, False)
+        self.payment.order(1, 'uid', 'gems_10', False)
 
         self.eq(self.engine.log, [])
+
+    def test_payment_error(self):
+        for error, item in [(ItemFormatError(), 'gems_no'),]:
+
+            self.eq(self.payment.order(1, 'uid', item, CHARGEABLE),
+                    {'error': {'error_code': error.code,
+                               'error_msg': error.msg,
+                               'critical': 1}})
 
     def test_item_format_error(self):
         self.raises(ItemFormatError, self.payment.item, 'item_no')

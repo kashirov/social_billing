@@ -18,10 +18,3 @@ class BaseHandler(RequestHandler):
 
     def get_user_locale(self):
         return tornado.locale.get('ru_RU')
-
-    def response(self, resp):
-        return self.finish({'response': resp})
-
-    def error(self, code, msg, critical=1):
-        return self.finish({'error': {'error_code': code, 'error_msg': msg,
-                            'critical': critical}})

@@ -45,21 +45,32 @@ class Payment(object):
     def title(self, name, count):
         return ' '.join((str(count), self.locale.translate(name)))
 
-    def info(self, name, count):
-        return {'title': self.title(name, count),
-                'price': self.price(name, count)}
-
     def has_order(self, order_id):
         return self.collection.find_one({'order_id': order_id}) is not None
 
     def ischargeable(self, status):
         return status == CHARGEABLE
 
-    def order(self, order_id, receiver_id, item, count, status):
-        if not self.has_order(order_id) and self.ischargeable(status):
-            self.process(order_id, receiver_id, item, count)
-        return {'order_id': order_id}
+    def response(self, msg):
+        return {'response': msg}
 
-    def process(self, order_id, receiver_id, item, count):
+    def info(self, item_count):
+        try:
+            name, count = self.item(item_count)
+            return self.response({'title': self.title(name, count),
+                                  'price': self.price(name, count)})
+        except (ItemFormatError, UnknownItemError, InvalidCountError) as error:
+            return error.response()
+
+    def order(self, order_id, receiver_id, item_count, status):
+        if not self.has_order(order_id) and self.ischargeable(status):
+            try:
+                self.process(order_id, receiver_id, item_count)
+            except ItemFormatError as error:
+                return error.response()
+        return self.response({'order_id': order_id})
+
+    def process(self, order_id, receiver_id, item_count):
+        name, count = self.item(item_count)
+        self.callback(receiver_id, name, count)
         self.collection.insert({'order_id': order_id})
-        self.callback(receiver_id, item, count)
