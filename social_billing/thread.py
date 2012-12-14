@@ -9,9 +9,9 @@ from social_billing.handler.base_handler import BaseHandler
 
 class BillingThread(Thread):
 
-    def __init__(self, prices, callback, port=8888):
+    def __init__(self, prices, secret, callback, port=8888):
         super(BillingThread, self).__init__()
-        BaseHandler.init(prices, callback)
+        BaseHandler.init(prices, secret, callback)
         self.app = application
         self.port = port
         self.loop = IOLoop.instance()
@@ -28,6 +28,6 @@ if __name__ == '__main__':
     def callback(self, *a):
         print a
 
-    service = BillingThread({'gems': {10: 1, 20: 2}}, callback)
+    service = BillingThread({'gems': {10: 1, 20: 2}}, 'secretkey', callback)
     service.run()
     print 'started'

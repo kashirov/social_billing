@@ -4,7 +4,9 @@ from tornado.web import Application
 from ztest import ZTest
 
 from social_billing.handler.base_handler import BaseHandler
-from social_billing.payment import CHARGEABLE, ORDER, GET_ITEM
+from social_billing.payment import ORDER, GET_ITEM, Payment
+from social_billing.order import CHARGEABLE
+from social_billing.payment import ORDER
 
 
 class MethodHook(object):
@@ -28,16 +30,36 @@ class FakeMixin(object):
         self.request.arguments = dict(self.process_args(args))
 
 
+class Engine(object):
+    '''
+    Mock object for testing callback
+    '''
+
+    def __init__(self):
+        self.log = []
+
+    def callback(self, receiver_id, name, count):
+        self.log.append((receiver_id, name, count))
+        return True
+
+
 class BaseTest(ZTest):
 
     app = Application(debug=True)
+    prices = {'gems': {10: 1, 20: 2}}
 
     def callback(self, *args):
         return True
 
     def __init__(self, *args, **kwargs):
         super(BaseTest, self).__init__(*args, **kwargs)
-        BaseHandler.init({'gems': {10: 1, 20: 2}}, 'secretkey', self.callback)
+        BaseHandler.init(self.prices, 'secretkey', self.callback)
+
+    def setUp(self):
+        self.engine = Engine()
+        self.payment = Payment(self.prices, 'secretkey',
+                               self.engine.callback)
+        self.payment.collection.drop()
 
     def proxy(self, data):
         return data
@@ -64,3 +86,6 @@ class BaseTest(ZTest):
         return self.sign({'notification_type': ORDER, 'item': item,
                           'status': CHARGEABLE, 'order_id': 1,
                           'receiver_id': 'uid'})
+
+    def error_callback(self, *a):
+        return False
