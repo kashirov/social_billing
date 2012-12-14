@@ -3,10 +3,10 @@ from tornado.httpserver import HTTPRequest
 from tornado.web import Application
 from ztest import ZTest
 
-from social_billing.handler.base_handler import BaseHandler
-from social_billing.payment import ORDER, GET_ITEM, Payment
-from social_billing.order import CHARGEABLE
-from social_billing.payment import ORDER
+from social_billing.engine.handler.order import CHARGEABLE
+from social_billing.engine.payment import Payment, ORDER
+from social_billing.web.handler.base_handler import BaseHandler
+from social_billing.engine.payment import GET_ITEM
 
 
 class MethodHook(object):

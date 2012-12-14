@@ -3,8 +3,8 @@ from threading import Thread
 
 from tornado.ioloop import IOLoop
 
-from social_billing.app import application
-from social_billing.handler.base_handler import BaseHandler
+from social_billing.web.app import application
+from social_billing.web.handler.base_handler import BaseHandler
 
 
 class BillingThread(Thread):
