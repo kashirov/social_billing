@@ -24,12 +24,12 @@ class IndexTest(BaseTest):
                 'receiver_id': 'uidhere'}
 
     def test_post_get_info(self):
-        self.eq(self.handler.post(self.get_item()),
+        self.eq(self.handler.post(self.info_args('gems_20')),
                 {'response': {'title': u'20 алмазов', 'price': 2}})
 
     def test_post_order(self):
-        self.eq(self.handler.post(self.order_status_change()),
-                self.payment.order('100500', 'uid', 'gems_10',
+        self.eq(self.handler.post(self.order_args()),
+                self.payment.order(1, 'uid', 'gems_10',
                                    CHARGEABLE))
 
     def test_errors(self):
@@ -37,7 +37,5 @@ class IndexTest(BaseTest):
                             (UnknownItemError(), 'coins_10'),
                             (InvalidCountError(), 'gems_11')]:
 
-            self.eq(self.handler.post(self.get_item(item=item)),
-                    {'error': {'error_code': error.code,
-                               'error_msg': error.msg,
-                               'critical': 1}})
+            self.eq(self.handler.post(self.info_args(item=item)),
+                    error.response())

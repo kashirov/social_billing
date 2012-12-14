@@ -10,8 +10,8 @@ from social_billing.payment import Payment
 class BaseHandler(RequestHandler):
 
     @classmethod
-    def init(self, prices, callback):
-        BaseHandler.payment = Payment(prices, callback)
+    def init(self, prices, secret, callback):
+        BaseHandler.payment = Payment(prices, secret, callback)
         tornado.locale.load_translations(
             os.path.join(os.path.dirname(__file__), "../translations")
         )

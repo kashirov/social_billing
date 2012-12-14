@@ -8,22 +8,22 @@ class ErorrsTest(BaseTest):
 
     def test_item_format(self):
         error = ItemFormatError()
-        self.eq(error.code, 10)
-        self.eq(error.msg, u'Неверный формат предмета')
+        self.eq(error.code, 11)
+        self.eq(error.name, u'item format error')
 
     def test_unknown_item(self):
         error = UnknownItemError()
-        self.eq(error.code, 11)
-        self.eq(error.msg, u'Неизвестный предмет')
+        self.eq(error.code, 20)
+        self.eq(error.name, u'unknown item')
 
     def test_invalid_count(self):
         error = InvalidCountError()
-        self.eq(error.code, 12)
-        self.eq(error.msg, u'Неверное количество')
+        self.eq(error.code, 21)
+        self.eq(error.name, u'invalid count')
 
     def test_callback_error(self):
         error = CallbackError()
-        self.eq(error.code, 13)
-        self.eq(error.msg, u'Ошибка покупки в игре')
+        self.eq(error.code, 1)
+        self.eq(error.name, u'callback error')
 
     

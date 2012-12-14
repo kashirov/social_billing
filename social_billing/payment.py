@@ -5,23 +5,27 @@ import tornado.locale
 from pymongo import Connection
 
 from social_billing.errors import ItemFormatError, UnknownItemError,\
-    InvalidCountError, CallbackError
+    InvalidCountError, CallbackError, SignatureError
+from social_billing.signature import Signature
 
 
 CHARGEABLE = 'chargeable'
+ORDER = 'order_status_change'
+GET_ITEM = 'get_item'
 
 
 class Payment(object):
 
     item_regexp = re.compile('^([a-z]+)_([0-9]+)$')
 
-    def __init__(self, prices, callback, db_prefix='test'):
+    def __init__(self, prices, secret, callback, db_prefix='test'):
         self.prices = prices
         self.callback = callback
 
         self.db = Connection()['payment_%s' % db_prefix]
         self.collection = self.db['order']
 
+        self.signature = Signature(secret)
         self.locale = tornado.locale.get('ru_RU')
 
     def item(self, arg):
@@ -55,19 +59,13 @@ class Payment(object):
         return {'response': msg}
 
     def info(self, item_count):
-        try:
-            name, count = self.item(item_count)
-            return self.response({'title': self.title(name, count),
-                                  'price': self.price(name, count)})
-        except (ItemFormatError, UnknownItemError, InvalidCountError) as error:
-            return error.response()
+        name, count = self.item(item_count)
+        return self.response({'title': self.title(name, count),
+                              'price': self.price(name, count)})
 
     def order(self, order_id, receiver_id, item_count, status):
         if not self.has_order(order_id) and self.ischargeable(status):
-            try:
-                self.process(order_id, receiver_id, item_count)
-            except (ItemFormatError, CallbackError) as error:
-                return error.response()
+            self.process(order_id, receiver_id, item_count)
         return self.response({'order_id': order_id})
 
     def process(self, order_id, receiver_id, item_count):
@@ -76,3 +74,18 @@ class Payment(object):
             self.collection.insert({'order_id': order_id})
         else:
             raise CallbackError()
+
+    def request(self, args):
+        notification_type = args.get('notification_type')
+
+        try:
+            if not self.signature.check(args, args.pop('sig')):
+                raise SignatureError()
+            if notification_type == GET_ITEM:
+                return self.info(args['item'])
+            if notification_type == ORDER:
+                return self.order(args['order_id'], args['receiver_id'],
+                                  args['item'], args['status'])
+        except (ItemFormatError, UnknownItemError, InvalidCountError,
+                CallbackError, SignatureError) as error:
+            return error.response()

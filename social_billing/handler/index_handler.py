@@ -16,17 +16,14 @@ class IndexHandler(BaseHandler):
     def isorder(self, ntype):
         return ntype.startswith(ORDER)
 
-    def post(self):
-        notification_type = self.get_argument('notification_type')
-        item = self.get_argument('item')
+    def gen_args(self):
+        for name, values in self.request.arguments.iteritems():
+            yield name, values[0]
 
-        if self.isget_item(notification_type):
-            return self.finish(self.payment.info(item))
-        elif self.isorder(notification_type):
-            order_id = self.get_argument('order_id', 'receiver_id')
-            receiver_id = self.get_argument('receiver_id')
-            status = self.get_argument('status')
-            return self.finish(self.payment.order(order_id, receiver_id,
-                                                  item, status))
+    def args(self):
+        return dict(self.gen_args())
+
+    def post(self):
+        return self.finish(self.payment.request(self.args()))
 
     get = post
