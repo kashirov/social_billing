@@ -29,9 +29,9 @@ class Payment(PaymentHandler):
         try:
             if not self.signature.check(args, args.pop('sig')):
                 raise SignatureError()
-            if notification_type == GET_ITEM:
+            if notification_type.startswith(GET_ITEM):
                 return self.info(args['item'])
-            if notification_type == ORDER:
+            if notification_type.startswith(ORDER):
                 return self.order(args['order_id'], args['receiver_id'],
                                   args['item'], args['status'])
         except (ItemFormatError, UnknownItemError, InvalidCountError,

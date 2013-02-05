@@ -2,7 +2,7 @@
 from social_billing.base_test import BaseTest
 from social_billing.engine.errors import InvalidCountError, UnknownItemError,\
     ItemFormatError
-from social_billing.web.handler.index_handler import IndexHandler
+from social_billing.web.handler.index_handler import IndexHandler, GET_ITEM
 from social_billing.engine.handler.order import CHARGEABLE
 
 
@@ -15,6 +15,11 @@ class IndexTest(BaseTest):
 
     def test_post_get_info(self):
         self.eq(self.handler.post(self.info_args('gems_20')),
+                {'response': {'title': u'20 алмазов', 'price': 2}})
+
+    def test_post_get_info_test(self):
+        self.eq(self.handler.post(self.info_args('gems_20',
+                                                 ntype=GET_ITEM+'_test')),
                 {'response': {'title': u'20 алмазов', 'price': 2}})
 
     def test_post_order(self):

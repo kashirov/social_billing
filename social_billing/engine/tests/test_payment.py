@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from social_billing.base_test import BaseTest
+from social_billing.base_test import BaseTest, GET_ITEM_TEST, ORDER_TEST
 from social_billing.engine.errors import ItemFormatError, UnknownItemError,\
     InvalidCountError, CallbackError, SignatureError
 from social_billing.engine.payment import Payment
@@ -15,8 +15,16 @@ class PaymentTest(BaseTest):
         self.eq(self.payment.request(self.info_args()),
                 self.payment.info('gems_10'))
 
+    def test_request_info_test(self):
+        self.eq(self.payment.request(self.info_args(ntype=GET_ITEM_TEST)),
+                self.payment.info('gems_10'))
+
     def test_request_order(self):
         self.eq(self.payment.request(self.order_args()),
+                self.payment.order(1, 'uid', 'gems_10', CHARGEABLE))
+
+    def test_request_order_test(self):
+        self.eq(self.payment.request(self.order_args(ntype=ORDER_TEST)),
                 self.payment.order(1, 'uid', 'gems_10', CHARGEABLE))
 
     def test_request_error_order(self):

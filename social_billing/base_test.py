@@ -9,6 +9,11 @@ from social_billing.web.handler.base_handler import BaseHandler
 from social_billing.engine.payment import GET_ITEM
 
 
+TEST_PREFIX = '_test'
+GET_ITEM_TEST = GET_ITEM + TEST_PREFIX
+ORDER_TEST = ORDER + TEST_PREFIX
+
+
 class MethodHook(object):
 
     def __init__(self, handler, method):
@@ -79,11 +84,11 @@ class BaseTest(ZTest):
         args['sig'] = self.payment.signature.md5(args)
         return args
 
-    def info_args(self, item='gems_10'):
-        return self.sign({'notification_type': GET_ITEM, 'item': item})
+    def info_args(self, item='gems_10', ntype=GET_ITEM):
+        return self.sign({'notification_type': ntype, 'item': item})
 
-    def order_args(self, item='gems_10'):
-        return self.sign({'notification_type': ORDER, 'item': item,
+    def order_args(self, item='gems_10', ntype=ORDER):
+        return self.sign({'notification_type': ntype, 'item': item,
                           'status': CHARGEABLE, 'order_id': 1,
                           'receiver_id': 'uid'})
 
