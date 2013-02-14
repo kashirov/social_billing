@@ -10,4 +10,5 @@ setup(name='social_billing',
                 'social_billing.web.handler',
                 'social_billing.engine', 'social_billing.engine.handler'],
       package_data={'social_billing': ['translations/*.csv']},
+      install_requires=['tornado', 'pymongo']
 )
