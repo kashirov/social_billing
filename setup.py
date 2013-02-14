@@ -10,5 +10,8 @@ setup(name='social_billing',
                 'social_billing.web.handler',
                 'social_billing.engine', 'social_billing.engine.handler'],
       package_data={'social_billing': ['translations/*.csv']},
+      dependency_links=[
+          "http://github.com/dsociative/ztest/tarball/master#egg=ztest-0.0.0",
+      ],
       install_requires=['tornado', 'pymongo', 'ztest']
 )
