@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from urlparse import parse_qs, parse_qsl
 from social_billing.engine.errors import ItemFormatError, UnknownItemError,\
     InvalidCountError
 from social_billing.web.handler.base_handler import BaseHandler
@@ -17,8 +18,8 @@ class IndexHandler(BaseHandler):
         return ntype.startswith(ORDER)
 
     def gen_args(self):
-        for name, values in self.request.arguments.iteritems():
-            yield name, values[0]
+        for name, value in parse_qsl(self.request.query, True):
+            yield name, value
 
     def args(self):
         return dict(self.gen_args())

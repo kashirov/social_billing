@@ -5,7 +5,7 @@ from social_billing.engine.errors import ItemFormatError, UnknownItemError,\
     InvalidCountError, CallbackError, SignatureError
 from social_billing.engine.handler.info import Info
 from social_billing.engine.handler.order import Order
-from social_billing.engine.handler.payment_handler import PaymentHandler
+from social_billing.engine.handler.billing import BillingHandler
 from social_billing.engine.signature import Signature
 
 
@@ -13,7 +13,7 @@ ORDER = 'order_status_change'
 GET_ITEM = 'get_item'
 
 
-class Payment(PaymentHandler):
+class Payment(BillingHandler):
 
     def __init__(self, prices, secret, callback, db_prefix='test'):
         self.db = Connection()['payment_%s' % db_prefix]

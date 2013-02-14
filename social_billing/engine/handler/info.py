@@ -2,10 +2,10 @@
 import tornado
 
 from social_billing.engine.errors import UnknownItemError, InvalidCountError
-from social_billing.engine.handler.payment_handler import PaymentHandler
+from social_billing.engine.handler.billing import BillingHandler
 
 
-class Info(PaymentHandler):
+class Info(BillingHandler):
 
     def __init__(self, prices):
         self.prices = prices

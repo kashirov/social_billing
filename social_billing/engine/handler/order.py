@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 from social_billing.engine.errors import CallbackError
-from social_billing.engine.handler.payment_handler import PaymentHandler
+from social_billing.engine.handler.billing import BillingHandler
 
 
 CHARGEABLE = 'chargeable'
 
 
-class Order(PaymentHandler):
+class Order(BillingHandler):
 
     def __init__(self, collection, callback):
         self.collection = collection

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from urllib import urlencode
 from tornado.httpserver import HTTPRequest
 from tornado.web import Application
 from ztest import ZTest
@@ -32,7 +33,7 @@ class FakeMixin(object):
             yield key, [value]
 
     def set_args(self, args):
-        self.request.arguments = dict(self.process_args(args))
+        self.request.query = urlencode(args)
 
 
 class Engine(object):
@@ -62,8 +63,7 @@ class BaseTest(ZTest):
 
     def setUp(self):
         self.engine = Engine()
-        self.payment = Payment(self.prices, 'secretkey',
-                               self.engine.callback)
+        self.payment = Payment(self.prices, 'secretkey', self.engine.callback)
         self.payment.collection.drop()
 
     def proxy(self, data):
@@ -74,11 +74,14 @@ class BaseTest(ZTest):
         handler.finish = self.proxy
         return handler
 
+    def request(self, method='GET', url=''):
+        return HTTPRequest(method, url)
+
     def fake(self, handler_cls, method='GET'):
         if not FakeMixin in handler_cls.__bases__:
             handler_cls.__bases__ += (FakeMixin,)
         return self.override(handler_cls(self.app,
-                                         HTTPRequest(method, '')))
+                                         self.request(method)))
 
     def sign(self, args):
         args['sig'] = self.payment.signature.md5(args)
