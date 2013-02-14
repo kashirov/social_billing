@@ -33,13 +33,13 @@ class FakeMixin(object):
             yield key, [value]
 
     def set_args(self, args):
-        self.request.query = urlencode(args)
+        self.request.body = urlencode(args)
 
 
 class Engine(object):
-    '''
+    """
     Mock object for testing callback
-    '''
+    """
 
     def __init__(self):
         self.log = []

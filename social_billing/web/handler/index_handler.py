@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
-from urlparse import parse_qs, parse_qsl
-from social_billing.engine.errors import ItemFormatError, UnknownItemError,\
-    InvalidCountError
+from urlparse import parse_qsl
+from tornado.escape import native_str
 from social_billing.web.handler.base_handler import BaseHandler
 
 
@@ -18,7 +17,7 @@ class IndexHandler(BaseHandler):
         return ntype.startswith(ORDER)
 
     def gen_args(self):
-        for name, value in parse_qsl(self.request.query, True):
+        for name, value in parse_qsl(native_str(self.request.body), True):
             yield name, value
 
     def args(self):
@@ -26,5 +25,3 @@ class IndexHandler(BaseHandler):
 
     def post(self):
         return self.finish(self.payment.request(self.args()))
-
-    get = post

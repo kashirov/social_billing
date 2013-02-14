@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from urllib import urlencode
 from social_billing.base_test import BaseTest
 from social_billing.engine.errors import InvalidCountError, UnknownItemError, \
     ItemFormatError
@@ -13,7 +14,8 @@ class IndexTest(BaseTest):
         self.payment = self.handler.payment
 
     def test_args_empty_arg(self):
-        self.handler.request = self.request(url='?item_id=&item_image_url=')
+        self.handler.request.body = urlencode({'item_id': '',
+                                               'item_image_url': ''})
         self.eq(self.handler.args(), {'item_id': '', 'item_image_url': ''})
 
     def test_post_get_info(self):
