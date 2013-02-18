@@ -49,6 +49,8 @@ class Engine(object):
         return True
 
 
+TEST_PAYMENT_NAME = 'test'
+
 class BaseTest(ZTest):
 
     app = Application(debug=True)
@@ -57,13 +59,12 @@ class BaseTest(ZTest):
     def callback(self, *args):
         return True
 
-    def __init__(self, *args, **kwargs):
-        super(BaseTest, self).__init__(*args, **kwargs)
-        BaseHandler.init(self.prices, 'secretkey', self.callback)
-
     def setUp(self):
+        BaseHandler.init(TEST_PAYMENT_NAME, self.prices, 'secretkey',
+                         self.callback)
         self.engine = Engine()
-        self.payment = Payment(self.prices, 'secretkey', self.engine.callback)
+        self.payment = Payment(TEST_PAYMENT_NAME, self.prices, 'secretkey',
+                               self.engine.callback)
         self.payment.collection.drop()
 
     def proxy(self, data):

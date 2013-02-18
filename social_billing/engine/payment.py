@@ -15,8 +15,8 @@ GET_ITEM = 'get_item'
 
 class Payment(BillingHandler):
 
-    def __init__(self, prices, secret, callback, db_prefix='test'):
-        self.db = Connection()['payment_%s' % db_prefix]
+    def __init__(self, name, prices, secret, callback):
+        self.db = Connection()['payment_%s' % name]
         self.collection = self.db['order']
 
         self.signature = Signature(secret)
