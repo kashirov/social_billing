@@ -16,7 +16,6 @@ ORDER_TEST = ORDER + TEST_PREFIX
 
 
 class MethodHook(object):
-
     def __init__(self, handler, method):
         self.handler = handler
         self.method = method
@@ -27,7 +26,6 @@ class MethodHook(object):
 
 
 class FakeMixin(object):
-
     def process_args(self, args):
         for key, value in args.iteritems():
             yield key, [value]
@@ -51,8 +49,8 @@ class Engine(object):
 
 TEST_PAYMENT_NAME = 'test'
 
-class BaseTest(ZTest):
 
+class BaseTest(ZTest):
     app = Application(debug=True)
     prices = {'gems': {10: 1, 20: 2}}
 
