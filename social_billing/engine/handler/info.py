@@ -8,23 +8,32 @@ from social_billing.engine.handler.billing import BillingHandler
 class Info(BillingHandler):
 
     def __init__(self, prices):
-        self.prices = prices
+        self.items = prices
         self.locale = tornado.locale.get('ru_RU')
 
-    def price(self, name, count):
-        item = self.prices.get(name)
-
+    def get_item(self, name):
+        item = self.items.get(name)
         if item is None:
             raise UnknownItemError()
-        elif count not in item:
+        return item
+
+    def price(self, item, count):
+        price = item['prices'].get(count)
+
+        if price is None:
             raise InvalidCountError()
         else:
-            return item[count]
+            return price
 
     def title(self, name, count):
         return ' '.join((str(count), self.locale.translate(name)))
 
+    def image(self, item):
+        return item.get('image', '')
+
     def __call__(self, item_count):
-        name, count = self.item(item_count)
+        name, count = self.split_item_count(item_count)
+        item = self.get_item(name)
         return self.response({'title': self.title(name, count),
-                              'price': self.price(name, count)})
+                              'price': self.price(item, count),
+                              'photo_url': self.image(item)})

@@ -52,16 +52,19 @@ TEST_PAYMENT_NAME = 'test'
 
 class BaseTest(ZTest):
     app = Application(debug=True)
-    prices = {'gems': {10: 1, 20: 2}}
+    items = {
+        'gems': {'prices': {10: 1, 20: 2},
+                 'image': 'image_url'}
+    }
 
     def callback(self, *args):
         return True
 
     def setUp(self):
-        BaseHandler.init(TEST_PAYMENT_NAME, self.prices, 'secretkey',
+        BaseHandler.init(TEST_PAYMENT_NAME, self.items, 'secretkey',
                          self.callback)
         self.engine = Engine()
-        self.payment = Payment(TEST_PAYMENT_NAME, self.prices, 'secretkey',
+        self.payment = Payment(TEST_PAYMENT_NAME, self.items, 'secretkey',
                                self.engine.callback)
         self.payment.collection.drop()
 

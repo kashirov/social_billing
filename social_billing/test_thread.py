@@ -8,8 +8,8 @@ class TestBillingThread(BaseTest):
 
     def test_init(self):
         thread = BillingThread(TEST_PAYMENT_NAME,
-                               {'gems': {5: 1, 10: 2}}, 'secretkey',
+                               self.items, 'secretkey',
                                lambda x: True)
-        self.eq(BaseHandler.payment.info.prices, {'gems': {5: 1, 10: 2}})
+        self.eq(BaseHandler.payment.info.items, self.items)
         self.eq(BaseHandler.payment.db.name, 'payment_' + TEST_PAYMENT_NAME)
 

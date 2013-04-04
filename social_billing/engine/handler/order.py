@@ -19,7 +19,7 @@ class Order(BillingHandler):
         return status == CHARGEABLE
 
     def process(self, order_id, receiver_id, item_count):
-        name, count = self.item(item_count)
+        name, count = self.split_item_count(item_count)
         if self.callback(receiver_id, name, count):
             self.collection.insert({'order_id': order_id})
         else:

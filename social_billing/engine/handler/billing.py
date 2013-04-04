@@ -8,7 +8,7 @@ class BillingHandler(object):
 
     item_regexp = re.compile('^([a-z]+)_([0-9]+)$')
 
-    def item(self, arg):
+    def split_item_count(self, arg):
         match = self.item_regexp.match(arg)
         if match:
             name, count = match.groups()
