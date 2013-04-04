@@ -1,6 +1,6 @@
 # -*- coding: utf8 -*-
 from social_billing.base_test import BaseTest, TEST_PAYMENT_NAME
-from social_billing.thread import BillingThread, main
+from social_billing.thread import BillingThread
 from social_billing.web.handler.base_handler import BaseHandler
 
 

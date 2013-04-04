@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 from social_billing.base_test import BaseTest, GET_ITEM_TEST, ORDER_TEST
-from social_billing.engine.errors import ItemFormatError, UnknownItemError,\
-    InvalidCountError, CallbackError, SignatureError
-from social_billing.engine.payment import Payment
+from social_billing.engine.errors import ItemFormatError, CallbackError, \
+    SignatureError
 from social_billing.engine.handler.order import CHARGEABLE
 
 
