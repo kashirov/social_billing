@@ -27,8 +27,10 @@ class VKBaseTest(BaseTest):
 
     def setUp(self):
         super(VKBaseTest, self).setUp()
-        BillingCore.init('vk', TEST_PAYMENT_NAME, self.items, 'secretkey',
-                         self.engine.callback)
+        BillingCore.init(
+            'vk', 'gems', TEST_PAYMENT_NAME, self.items, 'secretkey',
+            self.engine.callback
+        )
         self.payment = VKPayment(TEST_PAYMENT_NAME, self.items, 'secretkey',
                                self.engine.callback)
         self.payment.order.collection.drop()

@@ -15,7 +15,8 @@ class IndexHandlerWithMMPaymentTest(AsyncHTTPTestCase, MMBaseTest):
 
     def setUp(self):
         super(IndexHandlerWithMMPaymentTest, self).setUp()
-        BillingCore.init('mm', TEST_PAYMENT_NAME, self.items, 'secretkey',
+        BillingCore.init('mm', 'gems',
+                         TEST_PAYMENT_NAME, self.items, 'secretkey',
                          self.engine.callback)
 
     def test_buy(self):

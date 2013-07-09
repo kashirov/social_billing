@@ -3,17 +3,20 @@ import os
 
 import tornado
 
-from social_billing.mm.engine.payment import MMPayment
-from social_billing.vk.engine.payment import VKPayment
-
 
 class BillingCore(object):
 
-    mapper = {'vk': VKPayment, 'mm': MMPayment}
+    @staticmethod
+    def get_payment(social):
+        from social_billing.mm.engine.payment import MMPayment
+        from social_billing.vk.engine.payment import VKPayment
+
+        return {'vk': VKPayment, 'mm': MMPayment}[social]
 
     @classmethod
-    def init(cls, social_name, *args):
+    def init(cls, social_name, default_item, *args):
         tornado.locale.load_translations(
             os.path.join(os.path.dirname(__file__), "vk/translations")
         )
-        cls.payment = cls.mapper[social_name](*args)
+        cls.default_item = default_item
+        cls.payment = cls.get_payment(social_name)(*args)
