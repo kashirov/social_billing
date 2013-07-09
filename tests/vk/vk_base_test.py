@@ -15,25 +15,6 @@ GET_ITEM_TEST = GET_ITEM + TEST_PREFIX
 ORDER_TEST = ORDER + TEST_PREFIX
 
 
-class MethodHook(object):
-    def __init__(self, handler, method):
-        self.handler = handler
-        self.method = method
-
-    def __call__(self, args):
-        self.handler.set_args(args)
-        return self.method()
-
-
-class FakeMixin(object):
-    def process_args(self, args):
-        for key, value in args.iteritems():
-            yield key, [value]
-
-    def set_args(self, args):
-        self.request.body = urlencode(args)
-
-
 TEST_PAYMENT_NAME = 'test'
 
 
