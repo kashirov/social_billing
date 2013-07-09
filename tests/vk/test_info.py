@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
-from tests.base_test import BaseTest
+from tests.vk.vk_base_test import VKBaseTest
 from social_billing.vk.engine.errors import InvalidCountError, UnknownItemError,\
     ItemFormatError
 from social_billing.vk.engine.handler.info import Info
 
 
-class InfoTest(BaseTest):
+class InfoTest(VKBaseTest):
 
     def setUp(self):
         super(InfoTest, self).setUp()
@@ -49,4 +49,3 @@ class InfoTest(BaseTest):
 
     def test_invalid_count(self):
         self.raises(InvalidCountError, self.info.price, self.gems, 11)
-    

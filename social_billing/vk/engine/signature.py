@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import hashlib
+from social_billing.vk.engine.errors import SignatureError
 
 
 class Signature(object):
@@ -20,3 +21,7 @@ class Signature(object):
 
     def check(self, params, sig):
         return self.md5(params) == sig
+
+    def try_check(self, params):
+        if not self.check(params, params.pop('sig', '')):
+            raise SignatureError

@@ -18,4 +18,3 @@ class BillingHandler(object):
 
     def response(self, msg):
         return {'response': msg}
-    

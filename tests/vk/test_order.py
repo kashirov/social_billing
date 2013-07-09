@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
-from tests.base_test import BaseTest
+from tests.vk.vk_base_test import VKBaseTest, TEST_PAYMENT_NAME
 from social_billing.vk.engine.errors import CallbackError, ItemFormatError
-from social_billing.vk.engine.handler.order import Order, CHARGEABLE
+from social_billing.vk.engine.handler.vk_order import VKOrder, CHARGEABLE
 
 
-class OrderTest(BaseTest):
+class VKOrderTest(VKBaseTest):
 
     def setUp(self):
-        super(OrderTest, self).setUp()
-        self.order = Order(self.payment.collection, self.engine.callback)
+        super(VKOrderTest, self).setUp()
+        self.order = VKOrder(TEST_PAYMENT_NAME, self.engine.callback)
 
     def test_order(self):
         self.eq(self.order(1, 'uid', 'gems_10', CHARGEABLE),
@@ -27,7 +27,7 @@ class OrderTest(BaseTest):
         self.eq(self.engine.log, [('uid', 'gems', 10)])
 
     def test_callback_not_chargeable(self):
-        self.order(1, 'uid', 'gems_10', False)
+        self.order(1, 'uid', 'gems_10', 'notchargeable')
         self.eq(self.engine.log, [])
 
     def test_order_error(self):

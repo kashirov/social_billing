@@ -4,7 +4,7 @@ from pymongo import Connection
 from social_billing.vk.engine.errors import ItemFormatError, UnknownItemError,\
     InvalidCountError, CallbackError, SignatureError
 from social_billing.vk.engine.handler.info import Info
-from social_billing.vk.engine.handler.order import Order
+from social_billing.vk.engine.handler.vk_order import VKOrder
 from social_billing.vk.engine.handler.billing import BillingHandler
 from social_billing.vk.engine.signature import Signature
 
@@ -13,19 +13,15 @@ ORDER = 'order_status_change'
 GET_ITEM = 'get_item'
 
 
-class Payment(BillingHandler):
+class VKPayment(BillingHandler):
 
     def __init__(self, name, prices, secret, callback):
-        self.db = Connection()['payment_%s' % name]
-        self.collection = self.db['order']
-
         self.signature = Signature(secret)
         self.info = Info(prices)
-        self.order = Order(self.collection, callback)
+        self.order = VKOrder(name, callback)
 
     def request(self, args):
         notification_type = args.get('notification_type')
-
         try:
             if not self.signature.check(args, args.pop('sig')):
                 raise SignatureError()

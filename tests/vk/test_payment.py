@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
-from tests.base_test import BaseTest, GET_ITEM_TEST, ORDER_TEST
+from tests.vk.vk_base_test import VKBaseTest, GET_ITEM_TEST, ORDER_TEST
 from social_billing.vk.engine.errors import ItemFormatError, CallbackError, \
     SignatureError
-from social_billing.vk.engine.handler.order import CHARGEABLE
+from social_billing.vk.engine.handler.vk_order import CHARGEABLE
 
 
-class PaymentTest(BaseTest):
+class PaymentTest(VKBaseTest):
 
     def setUp(self):
         super(PaymentTest, self).setUp()
