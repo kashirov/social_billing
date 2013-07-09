@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 from urllib import urlencode
-from social_billing.base_test import BaseTest
-from social_billing.engine.errors import InvalidCountError, UnknownItemError, \
+from tests.base_test import BaseTest
+from social_billing.vk.engine.errors import InvalidCountError, UnknownItemError, \
     ItemFormatError
-from social_billing.web.handler.index_handler import IndexHandler, GET_ITEM
-from social_billing.engine.handler.order import CHARGEABLE
+from social_billing.vk.web.handler.index_handler import IndexHandler, GET_ITEM
+from social_billing.vk.engine.handler.order import CHARGEABLE
 
 
 class IndexTest(BaseTest):

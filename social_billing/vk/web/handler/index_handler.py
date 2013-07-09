@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from urlparse import parse_qsl
 from tornado.escape import native_str
-from social_billing.web.handler.base_handler import BaseHandler
+from social_billing.vk.web.handler.base_handler import BaseHandler
 
 
 ORDER = 'order_status_change'

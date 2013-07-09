@@ -4,10 +4,10 @@ from tornado.httpserver import HTTPRequest
 from tornado.web import Application
 from ztest import ZTest
 
-from social_billing.engine.handler.order import CHARGEABLE
-from social_billing.engine.payment import Payment, ORDER
-from social_billing.web.handler.base_handler import BaseHandler
-from social_billing.engine.payment import GET_ITEM
+from social_billing.vk.engine.handler.order import CHARGEABLE
+from social_billing.vk.engine.payment import Payment, ORDER
+from social_billing.vk.web.handler.base_handler import BaseHandler
+from social_billing.vk.engine.payment import GET_ITEM
 
 
 TEST_PREFIX = '_test'

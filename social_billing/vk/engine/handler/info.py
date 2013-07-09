@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 import tornado
 
-from social_billing.engine.errors import UnknownItemError, InvalidCountError
-from social_billing.engine.handler.billing import BillingHandler
+from social_billing.vk.engine.errors import UnknownItemError, InvalidCountError
+from social_billing.vk.engine.handler.billing import BillingHandler
 
 
 class Info(BillingHandler):

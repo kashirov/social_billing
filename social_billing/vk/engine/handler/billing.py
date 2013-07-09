@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import re
 
-from social_billing.engine.errors import ItemFormatError
+from social_billing.vk.engine.errors import ItemFormatError
 
 
 class BillingHandler(object):

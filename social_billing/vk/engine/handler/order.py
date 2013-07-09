@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from social_billing.engine.errors import CallbackError
-from social_billing.engine.handler.billing import BillingHandler
+from social_billing.vk.engine.errors import CallbackError
+from social_billing.vk.engine.handler.billing import BillingHandler
 
 
 CHARGEABLE = 'chargeable'

@@ -4,7 +4,7 @@ import os
 import tornado
 from tornado.web import RequestHandler
 
-from social_billing.engine.payment import Payment
+from social_billing.vk.engine.payment import Payment
 
 
 class BaseHandler(RequestHandler):

@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 from pymongo import Connection
 
-from social_billing.engine.errors import ItemFormatError, UnknownItemError,\
+from social_billing.vk.engine.errors import ItemFormatError, UnknownItemError,\
     InvalidCountError, CallbackError, SignatureError
-from social_billing.engine.handler.info import Info
-from social_billing.engine.handler.order import Order
-from social_billing.engine.handler.billing import BillingHandler
-from social_billing.engine.signature import Signature
+from social_billing.vk.engine.handler.info import Info
+from social_billing.vk.engine.handler.order import Order
+from social_billing.vk.engine.handler.billing import BillingHandler
+from social_billing.vk.engine.signature import Signature
 
 
 ORDER = 'order_status_change'

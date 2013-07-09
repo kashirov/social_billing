@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-from social_billing.base_test import BaseTest
-from social_billing.engine.errors import InvalidCountError, UnknownItemError,\
+from tests.base_test import BaseTest
+from social_billing.vk.engine.errors import InvalidCountError, UnknownItemError,\
     ItemFormatError
-from social_billing.engine.handler.info import Info
+from social_billing.vk.engine.handler.info import Info
 
 
 class InfoTest(BaseTest):

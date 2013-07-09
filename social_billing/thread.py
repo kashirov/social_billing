@@ -3,8 +3,8 @@ from threading import Thread
 
 from tornado.ioloop import IOLoop
 
-from social_billing.web.app import application
-from social_billing.web.handler.base_handler import BaseHandler
+from social_billing.vk.web.app import application
+from social_billing.vk.web.handler.base_handler import BaseHandler
 
 
 class BillingThread(Thread):
@@ -25,7 +25,7 @@ class BillingThread(Thread):
 
 
 def main():
-    from social_billing.base_test import TEST_PAYMENT_NAME
+    from tests.base_test import TEST_PAYMENT_NAME
 
     def callback(self, *a):
         print a
