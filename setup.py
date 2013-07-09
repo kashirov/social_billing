@@ -7,7 +7,7 @@ setup(name='social_billing',
       author='dsociative',
       author_email='admin@geektech.ru',
       packages=find_packages(),
-      package_data={'social_billing': ['translations/*.csv']},
+      package_data={'social_billing': ['vk/translations/*.csv']},
       dependency_links=[
           "http://github.com/dsociative/ztest/tarball/master#egg=ztest-0.0.0",
       ],
