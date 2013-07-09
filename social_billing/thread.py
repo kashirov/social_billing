@@ -9,9 +9,10 @@ from social_billing.web.app import application
 
 class BillingThread(Thread):
 
-    def __init__(self, social, name, prices, secret, callback, port=8888):
+    def __init__(self, social, default_item, name, prices, secret, callback,
+                 port=8888):
         super(BillingThread, self).__init__()
-        BillingCore.init(social, name, prices, secret, callback)
+        BillingCore.init(social, default_item, name, prices, secret, callback)
         self.app = application
         self.port = port
         self.loop = IOLoop.instance()

@@ -7,7 +7,7 @@ from social_billing.thread import BillingThread
 class TestBillingThread(VKBaseTest):
 
     def test_init(self):
-        thread = BillingThread('vk', TEST_PAYMENT_NAME,
+        thread = BillingThread('vk', 'gems', TEST_PAYMENT_NAME,
                                self.items, 'secretkey',
                                lambda x: True)
         self.eq(BillingCore.payment.info.items, self.items)
