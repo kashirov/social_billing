@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from pymongo import Connection
 
 from social_billing.vk.engine.errors import ItemFormatError, UnknownItemError,\
     InvalidCountError, CallbackError, SignatureError

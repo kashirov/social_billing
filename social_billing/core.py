@@ -1,9 +1,10 @@
 # -*- coding: utf8 -*-
 import os
+
+import tornado
+
 from social_billing.mm.engine.payment import MMPayment
 from social_billing.vk.engine.payment import VKPayment
-import tornado
-from tornado.web import RequestHandler
 
 
 class BillingCore(object):

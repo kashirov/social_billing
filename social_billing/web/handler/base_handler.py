@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 import os
-from social_billing.core import BillingCore
 
 import tornado
 from tornado.web import RequestHandler
+
+from social_billing.core import BillingCore
 
 
 class BaseHandler(RequestHandler):

@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from social_billing.base_order import BaseOrder
-from social_billing.vk.engine.errors import CallbackError
 from social_billing.vk.engine.handler.billing import BillingHandler
 
 
