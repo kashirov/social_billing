@@ -25,3 +25,4 @@ class IndexHandlerWithMMPaymentTest(AsyncHTTPTestCase, MMBaseTest):
         response = self.wait()
         self.eq(response.code, 200)
         self.eq(response.body, '{"status": 1}')
+        self.eq(self.engine.log, [('104', 'gems', 10)])
