@@ -23,8 +23,8 @@ class ODPayment(object):
     def request(self, args):
         try:
             self.signature.try_check(args)
-            count = int(args['service_id'])
-            price = int(args['mailiki_price'])
+            count = int(args['product_code'])
+            price = int(args['amount'])
             self.check_price(count, price)
             return self.order(args['uid'], args['transaction_id'], self.item,
                               count)
