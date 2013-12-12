@@ -6,6 +6,9 @@ from social_billing.vk.engine.signature import Signature
 
 
 class MMPayment(object):
+    COUNT_FIELD = 'service_id'
+    PRICE_FIELD = 'mailiki_price'
+
     def __init__(self, name, prices, secret, callback):
         self.signature = Signature(secret)
         self.prices = prices
@@ -23,8 +26,8 @@ class MMPayment(object):
     def request(self, args):
         try:
             self.signature.try_check(args)
-            count = int(args['service_id'])
-            price = int(args['mailiki_price'])
+            count = int(args[self.COUNT_FIELD])
+            price = int(args[self.PRICE_FIELD])
             self.check_price(count, price)
             return self.order(args['uid'], args['transaction_id'], self.item,
                               count)

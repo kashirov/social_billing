@@ -1,7 +1,6 @@
 # -*- coding: utf8 -*-
 from social_billing.core import BillingCore
 from tests.base_test import BaseTest
-from tests.mm.mm_base_test import MMBaseTest
 from tests.vk.vk_base_test import TEST_PAYMENT_NAME
 
 
