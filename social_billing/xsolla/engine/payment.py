@@ -31,7 +31,7 @@ class XsollaPayment(BillingHandler):
                 return self.check(user_id)
 
             if command.startswith(PAY):
-                price, order_id = args['sum'], args['id']
+                price, order_id = int(args['sum']), int(args['id'])
                 count = self.get_count(price)
                 if not self.signature.check(args.get('md5'), command, user_id,
                                             order_id):
