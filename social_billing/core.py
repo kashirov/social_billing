@@ -11,8 +11,10 @@ class BillingCore(object):
         from social_billing.mm.engine.payment import MMPayment
         from social_billing.vk.engine.payment import VKPayment
         from social_billing.od.engine.payment import ODPayment
+        from social_billing.xsolla.engine.payment import XsollaPayment
 
-        return {'vk': VKPayment, 'mm': MMPayment, 'od': ODPayment}[social]
+        return {'vk': VKPayment, 'mm': MMPayment, 'od': ODPayment,
+                                            'xsolla': XsollaPayment}[social]
 
     @classmethod
     def init(cls, social_name, default_item, *args):
