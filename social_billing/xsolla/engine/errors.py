@@ -16,22 +16,22 @@ class SignatureError(BaseException):
 class ItemFormatError(BaseException):
 
     code = 4
-    name = 'item format error'
+    comment = 'item format error'
 
 
 class UnknownItemError(BaseException):
 
     code = 4
-    name = 'unknown item'
+    comment = 'unknown item'
 
 
 class InvalidCountError(BaseException):
 
     code = 4
-    name = 'invalid count'
+    comment = 'invalid count'
 
 
 class CallbackError(BaseException):
 
     code = 5
-    name = 'callback error'
+    comment = 'callback error'
